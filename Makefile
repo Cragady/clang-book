@@ -7,7 +7,7 @@ FULL_FILE_NAME := $(FILE_HOME)$(FILE_NAME)
 OUT_OPTION := -o $(FILE_NAME)
 GCC_COMMAND_PARTIAL := gcc -std=c17 -pedantic-errors
 GCC_TO_C := $(GCC_COMMAND_PARTIAL) $(OUT_OPTION)
-GCC_TO_ASM := $(GCC_COMMAND_PARTIAL) -S $(OUT_OPTION).s
+GCC_TO_ASM := $(GCC_COMMAND_PARTIAL) -S -fverbose-asm $(OUT_OPTION).s
 
 5.1:
 	-$(GCC_TO_C) pointers-5.1.c
