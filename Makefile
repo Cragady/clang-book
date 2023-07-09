@@ -4,24 +4,37 @@ FILE_HOME := ./
 FILE_EXT :=
 FILE_NAME := $(FILE_NAME_PARTIAL)$(FILE_EXT)
 FULL_FILE_NAME := $(FILE_HOME)$(FILE_NAME)
-GCC_COMMAND_PARTIAL := gcc -o $(FILE_NAME) -std=c17 -pedantic-errors
+OUT_OPTION := -o $(FILE_NAME)
+GCC_COMMAND_PARTIAL := gcc -std=c17 -pedantic-errors
+GCC_TO_C := $(GCC_COMMAND_PARTIAL) $(OUT_OPTION)
+GCC_TO_ASM := $(GCC_COMMAND_PARTIAL) -S $(OUT_OPTION).s
 
 5.1:
-	-$(GCC_COMMAND_PARTIAL) pointers-5.1.c
+	-$(GCC_TO_C) pointers-5.1.c
+
+5.1-asm:
+	-$(GCC_TO_ASM) pointers-5.1.c
 
 5.1-and-run:
-	$(GCC_COMMAND_PARTIAL) pointers-5.1.c
+	$(GCC_TO_C) pointers-5.1.c
 	$(FULL_FILE_NAME)
 
 5.2:
-	-$(GCC_COMMAND_PARTIAL) pointers-5.2.c
+	-$(GCC_TO_C) pointers-5.2.c
+
+5.2-asm:
+	-$(GCC_TO_ASM) pointers-5.2.c
 
 5.2-and-run:
-	$(GCC_COMMAND_PARTIAL) pointers-5.2.c
+	$(GCC_TO_C) pointers-5.2.c
 	$(FULL_FILE_NAME)
 
 test-input:
-	$(GCC_COMMAND_PARTIAL) test-input.c
+	$(GCC_TO_C) test-input.c
+	$(FULL_FILE_NAME)
+
+test-input-asm:
+	$(GCC_TO_ASM) test-input.c
 	$(FULL_FILE_NAME)
 
 clean-files:
