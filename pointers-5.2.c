@@ -33,33 +33,53 @@ void swapExample() {
   printf("x: %i, y: %i\n", x, y);
 }
 
-int getint(int *pn) {
-  printf("%p\n", (void *)pn);
-  return 0;
-  int c, sign;
-
-  while (isspace(c = getch()));
-  if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
-    // if (!isalpha(c)) ungetch(c);
-    if (isalpha(c))
-      ungetch(0);
-    else
-      ungetch(c);
-    printf("%i\n", c);
-    printf("%s\n", buf);
+int validInput(int *pn, int *c, int ignoreSign) {
+  int signCheck = ignoreSign
+    ? *c != '+' && *c != '-'
+    : 1;
+  char *charType = ignoreSign
+    ? "non-alpha"
+    : "int";
+  if (!isdigit(*c) && *c != EOF && signCheck) {
+    printf("Please input a valid, %s character, or quit.\n", charType);
     return 0;
   }
-  sign = (c == '-') ? -1 : 1;
-  if (c == '+' || c == '-')
-    c = getch();
-  for (*pn = 0; isdigit(c); c = getch())
-    *pn = 10 * *pn + (c - '0');
+  return 1;
+}
+
+int getint(int *pn, int *c) {
+  printf("%p\n", (void *)pn);
+  int sign;
+
+  while (isspace(*c = getch()));
+  if (!validInput(pn, c, 1)) return getint(pn, c);
+  sign = (*c == '-') ? -1 : 1;
+  if (*c == '+' || *c == '-') {
+    printf("'+' or '-' alone is not valid.\n");
+    printf("Falling through to next in buffer. ");
+    printf("If there is no buffer, please provide a valid string of ints.\n");
+    printf("Next number(s): ");
+    int tmp = *c;
+    while(isspace(*c = getch()));
+    printf("\n");
+    if (!validInput(pn, c, 0)) {
+      ungetch(tmp);
+      return getint(pn, c);
+    }
+  }
+  for (*pn = 0; isdigit(*c); *c = getch())
+    *pn = 10 * *pn + (*c - '0');
 
   *pn *= sign;
-  if (c != EOF)
-    ungetch(c);
-  return c;
+  if (*c != EOF)
+    ungetch(*c);
+  return *c;
 }
+
+// int getch(void) {
+//   int charToInt = (bufp > 0) ? buf[--bufp] : 0;
+//   return (charToInt > 0) ? charToInt : getchar();
+// }
 
 int getch(void) {
   return (bufp > 0) ? buf[--bufp] : getchar();
@@ -74,18 +94,26 @@ void ungetch(int c) {
 
 void getintExample() {
   const int SIZE = 10;
-  int n, array[SIZE];
-  // for (n = 0; n < SIZE && getint(&array[n]) != EOF; n++);
-  // for (n = 0; n < SIZE; n++) {
-  //   int *ap = &array[n];
-  //   printf("ptr: %p\n", ap);
-  //   getint(ap);
-  // };
-  for (n = 0; n < sizeof(array) / sizeof(array[0]); n++) {
-    printf("Recorded input: %i\n", array[n]);
-    printf("Addressed at: %p\n", (void *)&array[n]);
+  int n, array[SIZE], c;
+
+  /*
+    I've solved some of the undefined behavior that this program had via
+    recursion.
+
+    I have older comments and what led me to this solution within test-input.c.
+    It may not contain the correctly broken getint with some of my observations,
+    but if you want to see different behaviors and come across what I've observed,
+    just poke around in that file.
+
+    This file's print logic could be cleaned up, possibly with some clever use or
+    abuse on memory or other methods.
+  */
+
+  for (n = 0; n < SIZE && getint(&array[n], &c) != EOF; n++);
+  for (int i = 0; i < n; i++) {
+    printf("Recorded input at index %i: %i\n", i, array[i]);
   }
-  printf("Address of arr name: %p\n", (void *)&array);
+
   printfCharArr(buf);
 }
 

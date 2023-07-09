@@ -2,6 +2,7 @@
 
 void bustedPrintfFullIntArray(int arr[]) {
   // This cannot know the lenght of the array if passed without length param
+  // This is due to type decay
   unsigned long length = sizeof(&arr) / sizeof(arr[0]);
   printf("length looks to be: %lu\n", length);
   printf("size of arr: %lu\n", sizeof(&arr));
@@ -9,6 +10,10 @@ void bustedPrintfFullIntArray(int arr[]) {
   printf("last element hard coded: %i\n", arr[9]);
   for (int i = 0; i < length; i++) {
     char *commaSuffix = (i < length - 1) ? ", " : ""; // char commaSuffix[] expected an initializer, not an expression
+    // This has something to do with pre-allocated memory?
+    // What I found on this is that items set like this should not have their
+    // values changed. Move the pointer (unsure if this will cause leaks),
+    // or declare something else.
     // char commaSuffix[] = ", ";
     if (i == 0) printf("[ ");
     printf("%i%s", arr[i], commaSuffix);
