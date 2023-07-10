@@ -6,12 +6,14 @@
   usage looks like. So, with that being said, If Dennis Ritchie does not see a
   huge need for 'goto's, neither do I. For me to comfortably use a 'goto', I
   need to know what it looks like when it's needed, and how to do it cleanly
-  (although, I imagine it woulnd't be too difficult, just ensure it's easily
+  (although, I imagine it wouldn't be too difficult, just ensure it's easily
   understandable).
 
   'jmp's started cropping up when defining and executing recursive function calls.
   This leads me to wonder if having a crazier setup with 'goto's, or other patterns,
   will cause 'jmp's in the asm as well.
+
+  Abandoning searching for other ways to make the asm use 'jmp'. I'll figure that out later.
 */
 
 #include <stdio.h>
