@@ -49,5 +49,15 @@ labels-and-goto-and-run:
 	$(GCC_TO_C) labels-and-goto.c
 	$(FULL_FILE_NAME)
 
+labels-and-goto.2:
+	-$(GCC_TO_C) labels-and-goto.2.c
+
+labels-and-goto.2-asm:
+	-$(GCC_TO_ASM) labels-and-goto.2.c
+
+labels-and-goto.2-and-run:
+	$(GCC_TO_C) labels-and-goto.2.c
+	$(FULL_FILE_NAME)
+
 clean-files:
 	rm $(FULL_FILE_NAME)
