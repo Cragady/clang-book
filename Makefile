@@ -30,11 +30,23 @@ GCC_TO_ASM := $(GCC_COMMAND_PARTIAL) -S -fverbose-asm $(OUT_OPTION).s
 	$(FULL_FILE_NAME)
 
 test-input:
+	-$(GCC_TO_C) test-input.c
+
+test-input-asm:
+	-$(GCC_TO_ASM) test-input.c
+
+test-input-and-run:
 	$(GCC_TO_C) test-input.c
 	$(FULL_FILE_NAME)
 
-test-input-asm:
-	$(GCC_TO_ASM) test-input.c
+labels-and-goto:
+	-$(GCC_TO_C) labels-and-goto.c
+
+labels-and-goto-asm:
+	-$(GCC_TO_ASM) labels-and-goto.c
+
+labels-and-goto-and-run:
+	$(GCC_TO_C) labels-and-goto.c
 	$(FULL_FILE_NAME)
 
 clean-files:
