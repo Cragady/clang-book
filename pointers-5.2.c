@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 #define BUFSIZE 10
 
 char buf[BUFSIZE];
@@ -47,6 +48,21 @@ int validInput(int *pn, int *c, int ignoreSign) {
   return 1;
 }
 
+int validInputf(float *pn, float *c, int ignoreSign) {
+  // duping cause I want to
+  int signCheck = ignoreSign
+    ? *c != '+' && *c != '-'
+    : 1;
+  char *charType = ignoreSign
+    ? "non-alpha"
+    : "float";
+  if (!isdigit(*c) && *c != EOF && *c != '.' && signCheck) {
+    printf("Please input a valid, %s character, or quit.\n", charType);
+    return 0;
+  }
+  return 1;
+}
+
 int getint(int *pn, int *c) {
   printf("%p\n", (void *)pn);
   int sign;
@@ -69,6 +85,48 @@ int getint(int *pn, int *c) {
   }
   for (*pn = 0; isdigit(*c); *c = getch())
     *pn = 10 * *pn + (*c - '0');
+
+  *pn *= sign;
+  if (*c != EOF)
+    ungetch(*c);
+  return *c;
+}
+
+float getfloat(float *pn, float *c) {
+  // duping cause I want to
+  printf("%p\n", (void *)pn);
+  int sign;
+
+  while (isspace(*c = getch()));
+  if (!validInputf(pn, c, 1)) return getfloat(pn, c);
+  sign = (*c == '-') ? -1 : 1;
+  if (*c == '+' || *c == '-') {
+    printf("'+' or '-' alone is not valid.\n");
+    printf("Falling through to next in buffer. ");
+    printf("If there is no buffer, please provide a valid string of floats.\n");
+    printf("Next number(s): ");
+    int tmp = *c;
+    while(isspace(*c = getch()));
+    printf("\n");
+    if (!validInputf(pn, c, 0)) {
+      ungetch(tmp);
+      return getfloat(pn, c);
+    }
+  }
+  int rightShift = 0;
+  for (*pn = 0; isdigit(*c) || *c == '.'; *c = getch()) {
+    if (rightShift) {
+      rightShift++;
+      if (*c == '.') continue;
+    }
+    if (*c == '.') {
+      rightShift++;
+      *c = getch();
+    }
+    *pn = rightShift
+      ? *pn + ((*c - '0') / pow(10, rightShift))
+      : 10 * *pn + (*c - '0');
+  }
 
   *pn *= sign;
   if (*c != EOF)
@@ -117,8 +175,41 @@ void getintExample() {
   printfCharArr(buf);
 }
 
-int main() {
+void getfloatExample() {
+  // duping cause I want to
+  /*
+    This isn't perfect, and you can see the floating point imprecision coming
+    through in the results. I didn't think I would create the 'getfloat' analog
+    to 'getint'.
+
+    If I decide to come back and clean it up, I may. At that point in time, I would
+    keep an eye out for bad structuring and/or bad functionality. Would also look at the
+    precision at that time.
+  */
+  const int SIZE = 10;
+  int n;
+  float array[SIZE], c;
+
+
+  for (n = 0; n < SIZE && getfloat(&array[n], &c) != EOF; n++);
+  for (int i = 0; i < n; i++) {
+    printf("Recorded input at index %i: %f\n", i, array[i]);
+  }
+
+  printfCharArr(buf);
+}
+
+int main(int argc, char *argv[]) {
+
+  int floatOption = argc > 1
+    ? *++argv[1]
+    : 0;
+
+  int floatOptionActive = floatOption == 'f';
+  printf("%i\n", floatOptionActive);
   swapExample();
-  getintExample();
+  floatOptionActive
+    ? getfloatExample()
+    : getintExample();
   return 0;
 }

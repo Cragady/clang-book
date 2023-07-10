@@ -20,13 +20,13 @@ GCC_TO_ASM := $(GCC_COMMAND_PARTIAL) -S -fverbose-asm $(OUT_OPTION).s
 	$(FULL_FILE_NAME)
 
 5.2:
-	-$(GCC_TO_C) pointers-5.2.c
+	-$(GCC_TO_C) pointers-5.2.c -lm
 
 5.2-asm:
-	-$(GCC_TO_ASM) pointers-5.2.c
+	-$(GCC_TO_ASM) pointers-5.2.c -lm
 
 5.2-and-run:
-	$(GCC_TO_C) pointers-5.2.c
+	$(GCC_TO_C) pointers-5.2.c -lm
 	$(FULL_FILE_NAME)
 
 test-input:
