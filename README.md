@@ -18,3 +18,4 @@ This may bleed into heavier memory management, or it may not.
 * https://www.jwz.org/blog/2014/04/heartbleed-hit-list/
 * https://www.quora.com/Is-C-language-more-prone-to-bugs-based-on-the-experience-of-Heartbleed
 * https://www.foonathan.net/2022/08/malloc-interface/#content
+* https://www.quora.com/Can-C++-do-everything-that-C-can (contains references to other books)
