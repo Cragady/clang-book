@@ -131,15 +131,15 @@ int strendOld(char *s, char *t) {
 int strend(char *s, char *t) {
   // TODO: see if there's a better way and/or tersify this
   int i = 0;
-  while(*s++ != '\0' && i++)
+  while(*s++ != '\0' && i++ + '0')
     if (t[i] != *s) i = 0;
-  printf("i: %i\n", i);
   return i > 0 && t[i] == '\0';
 }
 
 void stringOps() {
   char amessage[] = "heyoo";
   char *pmessage = amessage;
+  // char p2message[4];
   char p2message[5];
 
   p2message[0] = 'd';
