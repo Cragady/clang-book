@@ -116,24 +116,52 @@ char popChar(char *s) {
   return *--s;
 }
 
-
-int strendOld(char *s, char *t) {
+int strend(char *s, char *t) {
   // TODO: see if there's a better way and/or tersify this
   int i = 0;
-  for(; 1; s++, i++) {
-    if (*s == '\0')
-      break;
-    if (t[i] != *s || t[i] == '\0') i = 0;
+  for(; *s != '\0'; i++, s++) {
+    // if (t[i] != *s || t[i] == '\0') i = -1; // may need this in some cases
+    if (t[i] != *s) i = -1;
   }
   return i > 0 && t[i] == '\0';
 }
 
-int strend(char *s, char *t) {
-  // TODO: see if there's a better way and/or tersify this
-  int i = 0;
-  while(*s++ != '\0' && i++ + '0')
-    if (t[i] != *s) i = 0;
-  return i > 0 && t[i] == '\0';
+char *mStrncpy(char *s, char *ct, int n) {
+  /*
+    Copy at most ncharacters of string ct
+    to s; return s. Pad with '\0''s (NULL)
+    if t has fewer than n characters.
+  */
+  int ctLen = mstrlen(ct);
+  while(n--) {
+    *s++ = ctLen > 0
+      ? *ct++
+      : '\0';
+    ctLen--;
+  };
+  if (*s != '\0' || ctLen == 0) *s++ = '\0';
+  return s;
+}
+
+char *mStrncat(char *s, char *ct, int n) {
+  /*
+    Concatenate at most n characters of
+    string ct to string s, terminate s with
+    '\0'; return s
+  */
+
+  return s;
+
+
+}
+
+int mStrncmp(char *cs, char *ct, int n) {
+  /*
+    Compare at most n characters of string
+    cs to string ct; return < 0 if cs<ct,
+    0 if cs==ct, or >0 if cs>ct.
+  */
+  return -1;
 }
 
 void stringOps() {
@@ -199,24 +227,40 @@ void stringOps2() {
   printf("%i\n", worksLen);
 
   int testEnd = strend(test, works);
-  int testEndOld = strendOld(test, works);
 
   printf("testEnd: %i\n", testEnd);
-  printf("testEndOld: %i\n", testEndOld);
   printf("%s\n", test);
   pushChar(test + testLen, '<');
 
   testEnd = strend(test, works);
-  testEndOld = strendOld(test, works);
 
   printf("testEnd: %i\n", testEnd);
-  printf("testEndOld: %i\n", testEndOld);
   printf("%s\n", test);
+}
+
+void stringOps3() {
+  int charLen = 50;
+  int targetNum = 25;
+  char source[charLen];
+  char *target = "Heyoooooo, world <3";
+
+  mStrncpy(source, target, targetNum);
+  printf("source: %s\n", source);
+  // check to see if NULL filled
+  // if there are target - targetNum nulls after values
+  // filling worked. Actual output in above print
+  for (int i = 0; i < targetNum; i++) {
+    if (source[i] == '\0') printf("(nil), ");
+    else printf("%c, ", source[i]);
+  }
+  printf("\n%p\n", (void *) 's');
+
 }
 
 int main() {
   stringOps();
   doopDerp();
   stringOps2();
+  stringOps3();
   return 0;
 }
