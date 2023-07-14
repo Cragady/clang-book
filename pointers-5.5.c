@@ -121,9 +121,9 @@ int strend(char *s, char *t) {
   int i = 0;
   for(; *s != '\0'; i++, s++) {
     // if (t[i] != *s || t[i] == '\0') i = -1; // may need this in some cases
-    if (t[i] != *s) i = -1;
+    if (*(t + i) != *s) i = -1;
   }
-  return i > 0 && t[i] == '\0';
+  return i > 0 && *(t + i) == '\0';
 }
 
 char *mstrncpyold(char *s, char *ct, int n) {
@@ -172,10 +172,23 @@ int mstrncmp(char *cs, char *ct, int n) {
     0 if cs==ct, or >0 if cs>ct.
   */
   for(; n-- && *cs == *ct; cs++, ct++) {
-    printf("n: %i\n", n);
     if (*cs == '\0') return 0;
   }
   return *cs - *ct;
+}
+
+int getline(char *s, int lim) {
+  // TODO: pointerize
+  // int c, i;
+
+  // i = 0;
+  // while (--lim > 0 && (c=getchar()) != EOF && c != '\n')
+  //   s[i++] = c;
+  // if (c == '\n')
+  //   s[i++] = c;
+  // s[i] = '\0';
+  // return i;
+  return -1;
 }
 
 void stringOps() {
