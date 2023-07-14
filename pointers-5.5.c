@@ -126,7 +126,7 @@ int strend(char *s, char *t) {
   return i > 0 && t[i] == '\0';
 }
 
-char *mStrncpy(char *s, char *ct, int n) {
+char *mstrncpy(char *s, char *ct, int n) {
   /*
     Copy at most ncharacters of string ct
     to s; return s. Pad with '\0''s (NULL)
@@ -143,7 +143,7 @@ char *mStrncpy(char *s, char *ct, int n) {
   return s;
 }
 
-char *mStrncat(char *s, char *ct, int n) {
+char *mstrncat(char *s, char *ct, int n) {
   /*
     Concatenate at most n characters of
     string ct to string s, terminate s with
@@ -155,7 +155,7 @@ char *mStrncat(char *s, char *ct, int n) {
 
 }
 
-int mStrncmp(char *cs, char *ct, int n) {
+int mstrncmp(char *cs, char *ct, int n) {
   /*
     Compare at most n characters of string
     cs to string ct; return < 0 if cs<ct,
@@ -244,7 +244,7 @@ void stringOps3() {
   char source[charLen];
   char *target = "Heyoooooo, world <3";
 
-  mStrncpy(source, target, targetNum);
+  mstrncpy(source, target, targetNum);
   printf("source: %s\n", source);
   // check to see if NULL filled
   // if there are target - targetNum nulls after values
