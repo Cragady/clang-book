@@ -59,6 +59,16 @@ test-input-and-run:
 	$(GCC_TO_C) test-input.c
 	$(FULL_FILE_NAME)
 
+test-strings:
+	-$(GCC_TO_C) test-strings.c
+
+test-strings-asm:
+	-$(GCC_TO_ASM) test-strings.c
+
+test-strings-and-run:
+	$(GCC_TO_C) test-strings.c
+	$(FULL_FILE_NAME)
+
 labels-and-goto:
 	-$(GCC_TO_C) labels-and-goto.c
 

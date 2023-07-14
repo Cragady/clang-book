@@ -126,7 +126,7 @@ int strend(char *s, char *t) {
   return i > 0 && t[i] == '\0';
 }
 
-char *mstrncpy(char *s, char *ct, int n) {
+char *mstrncpyold(char *s, char *ct, int n) {
   /*
     Copy at most ncharacters of string ct
     to s; return s. Pad with '\0''s (NULL)
@@ -143,16 +143,26 @@ char *mstrncpy(char *s, char *ct, int n) {
   return s;
 }
 
+char *mstrncpy(char *s, char *ct, int n) {
+  while(*ct && n--) {
+    *s++ = *ct++;
+  }
+  // only pad once.
+  *s = '\0';
+  return s;
+}
+
 char *mstrncat(char *s, char *ct, int n) {
   /*
     Concatenate at most n characters of
     string ct to string s, terminate s with
     '\0'; return s
   */
-
+  while(*s++ != '\0');
+  *s--;
+  while(n-- && (*s++ = *ct++) != '\0');
+  *s = '\0';
   return s;
-
-
 }
 
 int mstrncmp(char *cs, char *ct, int n) {
@@ -161,7 +171,11 @@ int mstrncmp(char *cs, char *ct, int n) {
     cs to string ct; return < 0 if cs<ct,
     0 if cs==ct, or >0 if cs>ct.
   */
-  return -1;
+  for(; n-- && *cs == *ct; cs++, ct++) {
+    printf("n: %i\n", n);
+    if (*cs == '\0') return 0;
+  }
+  return *cs - *ct;
 }
 
 void stringOps() {
@@ -240,7 +254,7 @@ void stringOps2() {
 
 void stringOps3() {
   int charLen = 50;
-  int targetNum = 25;
+  int targetNum = 18;
   char source[charLen];
   char *target = "Heyoooooo, world <3";
 
@@ -249,12 +263,23 @@ void stringOps3() {
   // check to see if NULL filled
   // if there are target - targetNum nulls after values
   // filling worked. Actual output in above print
-  for (int i = 0; i < targetNum; i++) {
+  // re-ded strncpy to not fill with n values,
+  // just one. Also, possible to be one more than length of buffer,
+  // ¯\_(ツ)_/¯ it's ok. At least here.
+  for (int i = 0; i < targetNum + 1; i++) {
     if (source[i] == '\0') printf("(nil), ");
     else printf("%c, ", source[i]);
   }
   printf("\n%p\n", (void *) 's');
+  mstrncat(source, target, targetNum);
+  printf("%s\n", source);
 
+  int equal = mstrncmp("hello", "hello", 5);
+  int less = mstrncmp("hel", "hello", 5);
+  int more = mstrncmp("hello", "hell", 5);
+  printf("sanity: %i\n", equal);
+  printf("less: %i\n", less);
+  printf("more: %i\n", more);
 }
 
 int main() {
