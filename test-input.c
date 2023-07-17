@@ -101,12 +101,34 @@ int getintDebug(int *pn, int *c) {
   return *c;
 }
 
-int main() {
+getIntTesting() {
   int *ip;
   int c;
 
   while(!getintDebug(ip, &c));
 
   printf("%i\n", c);
+}
+
+
+int getline(char *s, int lim) {
+  // TODO: pointerize
+  int c, i;
+
+  while (--lim > 0 && (c=getchar()) != EOF && c != '\n')
+    s[i++] = c;
+  if (c == '\n')
+    s[i++] = c;
+  s[i] = '\0';
+  return i;
+}
+
+getlineTesting() {
+
+}
+
+int main() {
+  // getIntTesting();
+  getlineTesting();
   return 0;
 }
